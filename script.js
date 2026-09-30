@@ -1,18 +1,25 @@
-// ================================
+// =========================================
 // MOBILE MENU
-// ================================
+// =========================================
 
 const menuButton = document.getElementById("menuButton");
 const navbar = document.getElementById("navbar");
 
-menuButton.addEventListener("click", () => {
+if (menuButton && navbar) {
 
-    navbar.classList.toggle("show");
+    menuButton.addEventListener("click", () => {
 
-});
+        navbar.classList.toggle("show");
+
+    });
+
+}
 
 
-// Close menu when clicking a link
+
+// =========================================
+// CLOSE MOBILE MENU
+// =========================================
 
 const navLinks = document.querySelectorAll(".navbar a");
 
@@ -20,20 +27,25 @@ navLinks.forEach((link) => {
 
     link.addEventListener("click", () => {
 
-        navbar.classList.remove("show");
+        if (navbar) {
+
+            navbar.classList.remove("show");
+
+        }
 
     });
 
 });
 
 
-// ================================
+
+// =========================================
 // ACTIVE NAVIGATION
-// ================================
+// =========================================
 
 const sections = document.querySelectorAll("section");
 
-window.addEventListener("scroll", () => {
+function updateActiveNavigation() {
 
     let currentSection = "";
 
@@ -59,9 +71,10 @@ window.addEventListener("scroll", () => {
 
         link.classList.remove("active");
 
+        const linkTarget = link.getAttribute("href");
+
         if (
-            link.getAttribute("href") ===
-            "#" + currentSection
+            linkTarget === `#${currentSection}`
         ) {
 
             link.classList.add("active");
@@ -70,39 +83,110 @@ window.addEventListener("scroll", () => {
 
     });
 
-});
+}
 
 
-// ================================
-// SIMPLE SCROLL REVEAL
-// ================================
-
-const revealElements = document.querySelectorAll(
-    ".skill, .project, .stat-card, .timeline-item"
+window.addEventListener(
+    "scroll",
+    updateActiveNavigation
 );
 
-const revealObserver = new IntersectionObserver(
-    (entries) => {
 
-        entries.forEach((entry) => {
+updateActiveNavigation();
 
-            if (entry.isIntersecting) {
 
-                entry.target.classList.add("revealed");
 
-            }
+// =========================================
+// SCROLL REVEAL
+// =========================================
 
-        });
+const revealElements =
+    document.querySelectorAll(".reveal");
 
-    },
-    {
-        threshold: 0.12
-    }
-);
+
+const revealObserver =
+    new IntersectionObserver(
+
+        (entries) => {
+
+            entries.forEach((entry) => {
+
+                if (entry.isIntersecting) {
+
+                    entry.target.classList.add("show");
+
+                    revealObserver.unobserve(
+                        entry.target
+                    );
+
+                }
+
+            });
+
+        },
+
+        {
+            threshold: 0.12
+        }
+
+    );
 
 
 revealElements.forEach((element) => {
 
     revealObserver.observe(element);
+
+});
+
+
+
+// =========================================
+// PROFILE IMAGE FALLBACK
+// =========================================
+
+const profileImages =
+    document.querySelectorAll(
+        ".profile-image, .about-image-wrapper img"
+    );
+
+
+profileImages.forEach((image) => {
+
+    image.addEventListener("error", () => {
+
+        image.style.display = "none";
+
+        image.parentElement.classList.add(
+            "image-error"
+        );
+
+    });
+
+});
+
+
+
+// =========================================
+// NAVBAR BACKGROUND ON SCROLL
+// =========================================
+
+const header =
+    document.querySelector(".header");
+
+
+window.addEventListener("scroll", () => {
+
+    if (!header) return;
+
+
+    if (window.scrollY > 50) {
+
+        header.classList.add("scrolled");
+
+    } else {
+
+        header.classList.remove("scrolled");
+
+    }
 
 });
