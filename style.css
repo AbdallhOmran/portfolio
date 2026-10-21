@@ -101,3 +101,8 @@ h1,h2,h3{font-family:var(--head);line-height:1.15;letter-spacing:-.01em}
   .facts div,.timeline li{grid-template-columns:1fr;gap:2px}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+
+/* certificate */
+.cert{display:block;width:min(320px,100%);margin-top:16px;font-weight:600;text-decoration:none}
+.cert img{border-radius:12px;border:1px solid var(--line);margin-bottom:8px}
+.cert:hover span{text-decoration:underline}
